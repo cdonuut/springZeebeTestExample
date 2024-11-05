@@ -19,3 +19,4 @@ target/
 *.ipr
 
 application.properties
+.DS_Store
