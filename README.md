@@ -26,14 +26,34 @@ These clients allow the application to interact directly with Camunda’s backen
 
 Configuration settings are managed in the application.properties file. Key settings include:
 
-1. Camunda Client Configuration:
-2. zeebe.client.gatewayAddress: Defines the Zeebe broker address.
-3. operate.client.baseUrl: Sets the URL for the Camunda Operate instance.
-4. tasklist.client.baseUrl: Configures the Camunda Tasklist instance URL.
-5. Authentication: API keys or OAuth settings for Camunda Cloud should also be set here if required.
+##### Camunda Client Settings. These settings connect the application to your Camunda cluster.
+``` 
+camunda.client.clusterId=xxxxxxx
+camunda.client.auth.clientId=xxxxxxx
+camunda.client.auth.clientSecret=xxxxxxx
+camunda.client.region=bru-2
+camunda.client.mode=saas
+```
 
-Ensure these configurations are correctly set up to allow the application to communicate with the Camunda services.
+##### Configure these settings to enable monitoring and querying process instances in Camunda Operate.
+```
+operate.client.region=bru-2
+operate.client.clusterId=xxxxxxx
+operate.client.clientId=xxxxxxx
+operate.client.clientSecret=xxxxxxx
+operate.client.profile=saas
+```
 
+##### These settings allow the application to interact with Camunda Tasklist for managing user tasks.
+```
+tasklist.client.region=bru-2
+tasklist.client.clusterId=xxxxxxx
+tasklist.client.clientId=xxxxxxx
+tasklist.client.clientSecret=xxxxxxx
+tasklist.client.profile=saas
+```
+
+### Tip: You need those credentials with the right access level created on your Camunda Console
 ### Testing
 
 The application includes a comprehensive test suite that verifies the following:
