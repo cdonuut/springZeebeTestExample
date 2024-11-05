@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+  <bpmn:process id="PaperReviewProcess" name="TestingModel1" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Review Requested">
+      <bpmn:outgoing>Flow_0vc4gdf</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0vc4gdf" sourceRef="StartEvent_1" targetRef="Task_ReviewInput" />
+    <bpmn:sequenceFlow id="Flow_1cki6dh" sourceRef="Task_ReviewInput" targetRef="Task_CredibilityCheck" />
+    <bpmn:serviceTask id="Task_ReviewInput" name="Review Input">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="review-input" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vc4gdf</bpmn:incoming>
+      <bpmn:outgoing>Flow_1cki6dh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_CredibilityCheck" name="Check Credibility of the Author">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="credibility-check" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1cki6dh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rbqbri</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_13jg14t" name="Credible?">
+      <bpmn:incoming>Flow_0rbqbri</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nwz0vg</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0gj3o3q</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0rbqbri" sourceRef="Task_CredibilityCheck" targetRef="Gateway_13jg14t" />
+    <bpmn:endEvent id="End_ReviewComplete" name="Review Complete">
+      <bpmn:incoming>Flow_102hh9w</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1nwz0vg" name="Yes" sourceRef="Gateway_13jg14t" targetRef="Gateway_0a5t8hu">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=credible = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0gj3o3q" name="No" sourceRef="Gateway_13jg14t" targetRef="Task_ManualUserReview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=credible = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_0a5t8hu">
+      <bpmn:incoming>Flow_1nwz0vg</bpmn:incoming>
+      <bpmn:incoming>Flow_12llyud</bpmn:incoming>
+      <bpmn:outgoing>Flow_102hh9w</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_102hh9w" sourceRef="Gateway_0a5t8hu" targetRef="End_ReviewComplete" />
+    <bpmn:userTask id="Task_ManualUserReview" name="Manual Review">
+      <bpmn:incoming>Flow_0gj3o3q</bpmn:incoming>
+      <bpmn:outgoing>Flow_0iu8abo</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0iu8abo" sourceRef="Task_ManualUserReview" targetRef="Task_UpdateSystems" />
+    <bpmn:sequenceFlow id="Flow_12llyud" sourceRef="Task_UpdateSystems" targetRef="Gateway_0a5t8hu" />
+    <bpmn:serviceTask id="Task_UpdateSystems" name="Update Systems">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="update-systems" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0iu8abo</bpmn:incoming>
+      <bpmn:outgoing>Flow_12llyud</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="PaperReviewProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="150" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="141" y="143" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1i3zssm_di" bpmnElement="Task_ReviewInput">
+        <dc:Bounds x="240" y="78" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e0ttep_di" bpmnElement="Task_CredibilityCheck">
+        <dc:Bounds x="400" y="78" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_13jg14t_di" bpmnElement="Gateway_13jg14t" isMarkerVisible="true">
+        <dc:Bounds x="565" y="93" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="566" y="69" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1lkluhz_di" bpmnElement="End_ReviewComplete">
+        <dc:Bounds x="1052" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1027" y="143" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0a5t8hu_di" bpmnElement="Gateway_0a5t8hu" isMarkerVisible="true">
+        <dc:Bounds x="935" y="93" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xveulc_di" bpmnElement="Task_ManualUserReview">
+        <dc:Bounds x="640" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j02pkn_di" bpmnElement="Task_UpdateSystems">
+        <dc:Bounds x="810" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0vc4gdf_di" bpmnElement="Flow_0vc4gdf">
+        <di:waypoint x="186" y="118" />
+        <di:waypoint x="240" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cki6dh_di" bpmnElement="Flow_1cki6dh">
+        <di:waypoint x="340" y="118" />
+        <di:waypoint x="400" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rbqbri_di" bpmnElement="Flow_0rbqbri">
+        <di:waypoint x="500" y="118" />
+        <di:waypoint x="565" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nwz0vg_di" bpmnElement="Flow_1nwz0vg">
+        <di:waypoint x="615" y="118" />
+        <di:waypoint x="935" y="118" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="811" y="100" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gj3o3q_di" bpmnElement="Flow_0gj3o3q">
+        <di:waypoint x="590" y="143" />
+        <di:waypoint x="590" y="240" />
+        <di:waypoint x="640" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="598" y="190" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_102hh9w_di" bpmnElement="Flow_102hh9w">
+        <di:waypoint x="985" y="118" />
+        <di:waypoint x="1052" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0iu8abo_di" bpmnElement="Flow_0iu8abo">
+        <di:waypoint x="740" y="240" />
+        <di:waypoint x="810" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12llyud_di" bpmnElement="Flow_12llyud">
+        <di:waypoint x="910" y="240" />
+        <di:waypoint x="960" y="240" />
+        <di:waypoint x="960" y="143" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
