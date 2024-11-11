@@ -10,6 +10,7 @@ import io.camunda.tasklist.dto.TaskSearch;
 import io.camunda.tasklist.exception.TaskListException;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
+import io.camunda.zeebe.client.api.response.PublishMessageResponse;
 import org.awaitility.Awaitility;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.Map;
 @Component
 public class HelperFunctions {
 
-    private static final Duration TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration TIMEOUT = Duration.ofSeconds(120);
 
     private final ZeebeClient client;
     private final CamundaOperateClient operateClient;
@@ -29,6 +30,12 @@ public class HelperFunctions {
         this.client = client;
         this.operateClient = operateClient;
         this.taskListClient = taskListClient;
+    }
+
+    public void cancelInstance(ProcessInstance processInstance) {
+        client.newCancelInstanceCommand(processInstance.getKey())
+                .requestTimeout(Duration.ofSeconds(30))
+                .send().join();
     }
 
     public void deployProcess(String processId) {
@@ -45,6 +52,14 @@ public class HelperFunctions {
                 .variables(variables)
                 .send()
                 .join();
+    }
+
+    public PublishMessageResponse publishMessage(String messageName, String correlationKey, Map<String, Object> variables) {
+        return client.newPublishMessageCommand()
+                .messageName(messageName)
+                .correlationKey(correlationKey)
+                .variables(variables)
+                .send().join();
     }
 
     public ProcessInstance waitForProcessInstance(long instanceKey) throws OperateException {

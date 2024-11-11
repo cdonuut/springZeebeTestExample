@@ -24,6 +24,7 @@ public class PaperReviewTest {
         helperFunctions.deployProcess(PROCESS_ID);
     }
 
+    //TODO: MessageEvent
     @Test
     @Order(1)
     public void testProcessHasStarted() throws OperateException {
@@ -36,6 +37,7 @@ public class PaperReviewTest {
 
         // Then: Verify process instance is retrieved
         Assertions.assertNotNull(retrievedInstance, "Process instance should be retrievable from Operate.");
+        helperFunctions.cancelInstance(retrievedInstance);
     }
 
     @Test
@@ -45,6 +47,8 @@ public class PaperReviewTest {
         var instance = helperFunctions.startInstance(PROCESS_ID, Map.of("credible", true));
 
         // When: Wait for process completion
+        helperFunctions.publishMessage("credibilityResponse", "1234", Map.of("Author credibility ", true));
+        System.out.println("Message published. ");
         ProcessInstance completedInstance = helperFunctions.waitForProcessCompletion(instance.getProcessInstanceKey());
 
         // Then: Verify the process instance completed
@@ -58,6 +62,8 @@ public class PaperReviewTest {
         // Given: Start process with credible variable set to false
         var instance = helperFunctions.startInstance(PROCESS_ID, Map.of("credible", false));
         long instanceKey = instance.getProcessInstanceKey();
+        helperFunctions.publishMessage("credibilityResponse", "1234", Map.of("Author credibility ", false));
+        System.out.println("Message published. ");
 
         // When: Retrieve and complete the user task
         var taskList = helperFunctions.retrieveTask(instanceKey);
