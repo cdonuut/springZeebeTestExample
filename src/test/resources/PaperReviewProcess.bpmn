@@ -63,7 +63,7 @@
   </bpmn:process>
   <bpmn:message id="Message_2bo14ln" name="credibilityResponse">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=1234" />
+      <zeebe:subscription correlationKey="=reviewId" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -120,6 +120,10 @@
         <di:waypoint x="530" y="118" />
         <di:waypoint x="612" y="118" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1celymk_di" bpmnElement="Flow_1celymk">
+        <di:waypoint x="648" y="118" />
+        <di:waypoint x="735" y="118" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1nwz0vg_di" bpmnElement="Flow_1nwz0vg">
         <di:waypoint x="785" y="118" />
         <di:waypoint x="1105" y="118" />
@@ -139,18 +143,14 @@
         <di:waypoint x="1155" y="118" />
         <di:waypoint x="1222" y="118" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0iu8abo_di" bpmnElement="Flow_0iu8abo">
-        <di:waypoint x="910" y="240" />
-        <di:waypoint x="980" y="240" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12llyud_di" bpmnElement="Flow_12llyud">
         <di:waypoint x="1080" y="240" />
         <di:waypoint x="1130" y="240" />
         <di:waypoint x="1130" y="143" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1celymk_di" bpmnElement="Flow_1celymk">
-        <di:waypoint x="648" y="118" />
-        <di:waypoint x="735" y="118" />
+      <bpmndi:BPMNEdge id="Flow_0iu8abo_di" bpmnElement="Flow_0iu8abo">
+        <di:waypoint x="910" y="240" />
+        <di:waypoint x="980" y="240" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

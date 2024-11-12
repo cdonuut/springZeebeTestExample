@@ -10,7 +10,6 @@ import io.camunda.tasklist.dto.TaskSearch;
 import io.camunda.tasklist.exception.TaskListException;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
-import io.camunda.zeebe.client.api.response.PublishMessageResponse;
 import org.awaitility.Awaitility;
 import org.springframework.stereotype.Component;
 
@@ -54,8 +53,8 @@ public class HelperFunctions {
                 .join();
     }
 
-    public PublishMessageResponse publishMessage(String messageName, String correlationKey, Map<String, Object> variables) {
-        return client.newPublishMessageCommand()
+    public void publishMessage(String messageName, String correlationKey, Map<String, Object> variables) {
+        client.newPublishMessageCommand()
                 .messageName(messageName)
                 .correlationKey(correlationKey)
                 .variables(variables)
